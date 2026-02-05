@@ -4,7 +4,16 @@ pipeline {
     stages {
         stage('Unit Tests - Backend') {
             steps {
-                echo 'Hello World'
+                agent {
+                    docker {
+                        image 'golang:1.20'
+                        //args '-v /go/pkg/mod:/go/pkg/mod'
+                        reuseNode true
+                    }
+                }
+                dir('bugtracker-backend') {
+                    //go test -v ./...
+                    sh 'go test -v ./...'
             }
         }
     }
